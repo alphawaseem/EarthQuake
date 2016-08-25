@@ -16,6 +16,9 @@ public class Quake {
     private String city ;  // city of earthquake
     private String date ; // date of earthquake
 
+    public Quake() {
+
+    }
     /**
      * Create new Quake object
      *
