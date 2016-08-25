@@ -14,7 +14,7 @@ public class Quake {
 
     private double magnitude ; // magnitude of the earthquake
     private String city ;  // city of earthquake
-    private String date ; // date of earthquake
+    private long date; // date of earthquake
 
     public Quake() {
 
@@ -29,7 +29,7 @@ public class Quake {
      * @param date is the date on which earthquake took place (e.g. Feb 2,2016)
      *
      */
-    public Quake(double magnitude , String city , String date) {
+    public Quake(double magnitude, String city, long date) {
 
         this.magnitude = magnitude ;
         this.city = city;
@@ -56,7 +56,7 @@ public class Quake {
      *
      * @return the date of earthquake ( MM DD,YYYY)
      */
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 

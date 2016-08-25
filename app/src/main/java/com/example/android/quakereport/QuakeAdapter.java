@@ -64,7 +64,8 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
 
         //add date to the listView
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.date) ;
-        dateTextView.setText(currentQuakeItem.getDate());
+        String time = Double.toString(currentQuakeItem.getDate());
+        dateTextView.setText(time);
 
 
         //return the listItemview
