@@ -12,7 +12,7 @@ package com.example.android.quakereport;
  */
 public class Quake {
 
-    private int magnitude ; // magnitude of the earthquake
+    private double magnitude ; // magnitude of the earthquake
     private String city ;  // city of earthquake
     private String date ; // date of earthquake
 
@@ -26,7 +26,7 @@ public class Quake {
      * @param date is the date on which earthquake took place (e.g. Feb 2,2016)
      *
      */
-    public Quake(int magnitude , String city , String date) {
+    public Quake(double magnitude , String city , String date) {
 
         this.magnitude = magnitude ;
         this.city = city;
@@ -37,7 +37,7 @@ public class Quake {
      *
      * @return the magnitude of earthquake
      */
-    public int getMagnitude() {
+    public double getMagnitude() {
         return magnitude ;
     }
 
