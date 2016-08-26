@@ -1,6 +1,9 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,8 +85,64 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         TextView magnitudeTextView = (TextView) listItemView.findViewById(R.id.magnitude);
         DecimalFormat magnitudeFormat = new DecimalFormat("0.0");
         String magnitude = magnitudeFormat.format(currentQuakeItem.getMagnitude());
+
+        GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeTextView.getBackground();
+
+        int magnitudeColor = getMagnitudeColor(currentQuakeItem.getMagnitude());
+
+        magnitudeCircle.setColor(magnitudeColor);
         magnitudeTextView.setText(magnitude);
 
+
+    }
+
+    /**
+     * This functions takes double makes it to integer and returns
+     * a color corresponding to that number.
+     * If the number is not in range 1,10 then it return Black
+     *
+     * @param mag double number which will be casted to int
+     * @return Color in integer
+     */
+    private int getMagnitudeColor(double mag) {
+
+        int color;
+        switch ((int) Math.floor(mag)) {
+            case 1:
+                color = R.color.magnitude1;
+                break;
+            case 2:
+                color = R.color.magnitude2;
+                break;
+            case 3:
+                color = R.color.magnitude3;
+                break;
+            case 4:
+                color = R.color.magnitude4;
+                break;
+            case 5:
+                color = R.color.magnitude5;
+                break;
+            case 6:
+                color = R.color.magnitude6;
+                break;
+            case 7:
+                color = R.color.magnitude7;
+                break;
+            case 8:
+                color = R.color.magnitude8;
+                break;
+            case 9:
+                color = R.color.magnitude9;
+                break;
+            case 10:
+                color = R.color.magnitude10plus;
+                break;
+            default:
+                color = Color.BLACK;
+
+        }
+        return ContextCompat.getColor(getContext(), color);
     }
 
     /**
