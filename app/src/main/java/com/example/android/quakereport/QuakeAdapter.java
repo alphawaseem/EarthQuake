@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by waseem on 8/25/16.
@@ -64,12 +66,29 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
 
         //add date to the listView
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.date) ;
-        String time = Double.toString(currentQuakeItem.getDate());
-        dateTextView.setText(time);
+
+        // change time format from long to local format
+        Date dateObject = new Date(currentQuakeItem.getDate());
+
+        String date = getDate(dateObject);
+        String time = getTime(dateObject);
+        String dateTime = date + "\n" + time;
+
+        dateTextView.setText(dateTime);
 
 
         //return the listItemview
         return listItemView ;
 
+    }
+
+    private String getDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
+        return dateFormat.format(date);
+    }
+
+    private String getTime(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
+        return dateFormat.format(date);
     }
 }
