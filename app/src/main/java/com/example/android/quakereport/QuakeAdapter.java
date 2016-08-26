@@ -56,16 +56,67 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         Quake currentQuakeItem = getItem(position);
 
         // add magnitude to the listView
-        TextView magnitudeTextView = (TextView) listItemView.findViewById(R.id.magnitude);
-        String magnitude = Double.toString(currentQuakeItem.getMagnitude()) ;
-        magnitudeTextView.setText(magnitude);
+        inflateMagnitude(listItemView, currentQuakeItem);
 
         //add city to the listView
-        TextView cityTextView = (TextView) listItemView.findViewById(R.id.city);
-        cityTextView.setText(currentQuakeItem.getCity());
+        inflateCity(listItemView, currentQuakeItem);
 
         //add date to the listView
-        TextView dateTextView = (TextView) listItemView.findViewById(R.id.date) ;
+        inflateDateAndTime(listItemView, currentQuakeItem);
+
+
+        //return the listItemview
+        return listItemView ;
+
+    }
+
+    /**
+     * This function will inflate the magnitude to listItemView from the
+     * current Quake object
+     *
+     * @param listItemView     is the View that will take the magnitude
+     * @param currentQuakeItem is the quake object from which magnitude is extracted
+     */
+    private void inflateMagnitude(View listItemView, Quake currentQuakeItem) {
+        TextView magnitudeTextView = (TextView) listItemView.findViewById(R.id.magnitude);
+        String magnitude = Double.toString(currentQuakeItem.getMagnitude());
+        magnitudeTextView.setText(magnitude);
+
+    }
+
+    /**
+     * This function will inflate the city and offset to listItemView from the
+     * current Quake object
+     *
+     * @param listItemView     is the View that will take the city and offset
+     * @param currentQuakeItem is the quake object from which city is extracted
+     */
+    private void inflateCity(View listItemView, Quake currentQuakeItem) {
+        TextView cityTextView = (TextView) listItemView.findViewById(R.id.city);
+        TextView offsetTextView = (TextView) listItemView.findViewById(R.id.city_offset);
+
+        String offsetAndCity = currentQuakeItem.getCity();
+        if (offsetAndCity.contains(" of ")) {
+            String[] strings = offsetAndCity.split(" of ");
+
+            offsetTextView.setText(strings[0] + " of");
+            cityTextView.setText(strings[1]);
+        } else {
+            offsetTextView.setText("Near to");
+            cityTextView.setText(offsetAndCity);
+        }
+
+    }
+
+    /**
+     * This function will inflate the date and time to listItemView from the
+     * current Quake object
+     *
+     * @param listItemView     is the View that will take the date and time
+     * @param currentQuakeItem is the quake object from which date and time is extracted
+     */
+    private void inflateDateAndTime(View listItemView, Quake currentQuakeItem) {
+        TextView dateTextView = (TextView) listItemView.findViewById(R.id.date);
 
         // change time format from long to local format
         Date dateObject = new Date(currentQuakeItem.getDate());
@@ -75,18 +126,26 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         String dateTime = date + "\n" + time;
 
         dateTextView.setText(dateTime);
-
-
-        //return the listItemview
-        return listItemView ;
-
     }
 
+    /**
+     * This function will return the string representation of date
+     * from the date object in the form MMM DD, yyyy (e.g. Jan 30, 2016)
+     *
+     * @param date Date object
+     * @return the string date
+     */
     private String getDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
         return dateFormat.format(date);
     }
 
+    /**
+     * This function will return the string representation of time
+     * from the date object in the form h:mm a (e.g. 8:45 AM)
+     * @param date Date object
+     * @return the string date
+     */
     private String getTime(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
         return dateFormat.format(date);
