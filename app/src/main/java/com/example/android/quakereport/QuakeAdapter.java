@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,7 +80,8 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
      */
     private void inflateMagnitude(View listItemView, Quake currentQuakeItem) {
         TextView magnitudeTextView = (TextView) listItemView.findViewById(R.id.magnitude);
-        String magnitude = Double.toString(currentQuakeItem.getMagnitude());
+        DecimalFormat magnitudeFormat = new DecimalFormat("0.0");
+        String magnitude = magnitudeFormat.format(currentQuakeItem.getMagnitude());
         magnitudeTextView.setText(magnitude);
 
     }
