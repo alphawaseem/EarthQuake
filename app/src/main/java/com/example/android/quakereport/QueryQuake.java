@@ -43,10 +43,10 @@ public final class QueryQuake {
      * Return a list of {@link Quake} objects that has been built up from
      * parsing a JSON response.
      */
-    public static ArrayList<Quake> extractEarthquakes() {
+    public static ArrayList<EarthQuake> extractEarthquakes() {
 
         // Create an empty ArrayList that we can start adding earthquakes to
-        ArrayList<Quake> earthquakes = new ArrayList<>();
+        ArrayList<EarthQuake> earthquakes = new ArrayList<>();
 
         // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
@@ -64,7 +64,8 @@ public final class QueryQuake {
                 double magnitude = properties.getDouble("mag");
                 String city = properties.getString("place");
                 long date = properties.getLong("time");
-                earthquakes.add(new Quake(magnitude, city, date));
+                String url = properties.getString("url");
+                earthquakes.add(new EarthQuake(magnitude, city, date, url));
             }
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,

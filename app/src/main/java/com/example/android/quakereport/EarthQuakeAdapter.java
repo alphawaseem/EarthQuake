@@ -1,8 +1,10 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,44 +20,45 @@ import java.util.Date;
 /**
  * Created by waseem on 8/25/16.
  */
-public class QuakeAdapter extends ArrayAdapter<Quake> {
+public class EarthQuakeAdapter extends ArrayAdapter<EarthQuake> {
 
 
     /**
      * This is own constructor it does mirror ArrayAdapter constructor
-     *
+     * <p>
      * this constructor calls super constructor which takes 3
      * parameters. second parameter is used to refer default textView
      * in this case we dont need it hense we pass 0 for second argument
      *
-     * @param context the current context used to inflate layout
+     * @param context     the current context used to inflate layout
      * @param earthquakes list of Quakes objects
      */
-    public QuakeAdapter(Context context , ArrayList<Quake> earthquakes) {
-        super(context,0,earthquakes);
+
+    public EarthQuakeAdapter(Context context, ArrayList<EarthQuake> earthquakes) {
+        super(context, 0, earthquakes);
 
     }
 
     /**
      * Provides a view for an AdapterView (ListView, GridView, etc.)
      *
-     * @param position The position in the list of data that should be displayed in the
-     *                 list item view.
+     * @param position    The position in the list of data that should be displayed in the
+     *                    list item view.
      * @param convertView The recycled view to populate.
-     * @param parent The parent ViewGroup that is used for inflation.
+     * @param parent      The parent ViewGroup that is used for inflation.
      * @return The View for the position in the AdapterView.
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View listItemView = convertView;
-        if(listItemView == null) {
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.earthquake_list_item, parent, false);
         }
 
         // get current earthQuake item
-        Quake currentQuakeItem = getItem(position);
+        EarthQuake currentQuakeItem = getItem(position);
 
         // add magnitude to the listView
         inflateMagnitude(listItemView, currentQuakeItem);
@@ -66,9 +69,9 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
         //add date to the listView
         inflateDateAndTime(listItemView, currentQuakeItem);
 
-
+        attachItemOnClickListener(listItemView, currentQuakeItem);
         //return the listItemview
-        return listItemView ;
+        return listItemView;
 
     }
 
@@ -202,11 +205,24 @@ public class QuakeAdapter extends ArrayAdapter<Quake> {
     /**
      * This function will return the string representation of time
      * from the date object in the form h:mm a (e.g. 8:45 AM)
+     *
      * @param date Date object
      * @return the string date
      */
     private String getTime(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
         return dateFormat.format(date);
+    }
+
+
+    private void attachItemOnClickListener(final View listItemView, final EarthQuake currentQuakeItem) {
+
+        listItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentQuakeItem.getUrl()));
+                getContext().startActivity(intent);
+            }
+        });
     }
 }
