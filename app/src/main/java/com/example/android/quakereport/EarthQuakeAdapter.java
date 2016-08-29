@@ -196,7 +196,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuake> {
      * @return the string date
      */
     private String getDate(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
         return dateFormat.format(date);
     }
 
