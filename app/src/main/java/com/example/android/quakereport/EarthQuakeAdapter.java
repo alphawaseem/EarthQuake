@@ -1,10 +1,8 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +67,7 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuake> {
         //add date to the listView
         inflateDateAndTime(listItemView, currentQuakeItem);
 
-        attachItemOnClickListener(listItemView, currentQuakeItem);
+
         //return the listItemview
         return listItemView;
 
@@ -215,14 +213,5 @@ public class EarthQuakeAdapter extends ArrayAdapter<EarthQuake> {
     }
 
 
-    private void attachItemOnClickListener(final View listItemView, final EarthQuake currentQuakeItem) {
 
-        listItemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentQuakeItem.getUrl()));
-                getContext().startActivity(intent);
-            }
-        });
-    }
 }
