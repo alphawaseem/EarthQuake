@@ -15,9 +15,10 @@
  */
 package com.example.android.quakereport;
 
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -26,50 +27,57 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderCallbacks<ArrayList<EarthQuake>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+    ListView earthquakeListView;
+    EarthQuakeAdapter adapter;
+    private String stringUrl = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        String stringUrl = "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
-        new ExtractEarthQuakes().execute(stringUrl);
+        getLoaderManager().initLoader(0, null, this);
 
 
     }
 
-    private class ExtractEarthQuakes extends AsyncTask<String, Void, ArrayList<EarthQuake>> {
+    @Override
+    public Loader<ArrayList<EarthQuake>> onCreateLoader(int id, Bundle args) {
+        EarthQuakeLoader loader = new EarthQuakeLoader(EarthquakeActivity.this, stringUrl);
+        return loader;
+    }
 
-        @Override
-        protected ArrayList<EarthQuake> doInBackground(String... urls) {
-            if (urls.length < 1 || urls[0] == null) {
-                return null;
-            }
-            return QueryQuake.extractEarthquakes(urls[0]);
-        }
+    @Override
+    public void onLoadFinished(Loader<ArrayList<EarthQuake>> loader, ArrayList<EarthQuake> earthquakes) {
 
-        @Override
-        protected void onPostExecute(ArrayList<EarthQuake> earthQuakes) {
-            EarthQuakeAdapter adapter = new EarthQuakeAdapter(getBaseContext(), earthQuakes);
-            ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
-            if (earthquakeListView != null) {
-                earthquakeListView.setAdapter(adapter);
-                earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        adapter = new EarthQuakeAdapter(getBaseContext(), earthquakes);
+        ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
-                        EarthQuake currentQuake = (EarthQuake) parent.getItemAtPosition(position);
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(currentQuake.getUrl()));
-                        startActivity(intent);
-                    }
-                });
-            }
+        if (earthquakeListView != null) {
+            earthquakeListView.setAdapter(adapter);
+            earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    EarthQuake currentQuake = (EarthQuake) parent.getItemAtPosition(position);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(currentQuake.getUrl()));
+                    startActivity(intent);
+                }
+            });
         }
     }
+
+    @Override
+    public void onLoaderReset(Loader<ArrayList<EarthQuake>> loader) {
+
+        adapter.clear();
+
+    }
+
 }
